@@ -1,0 +1,11 @@
+{
+  "mode": "dev",
+  "tailwind": {
+    "theme": {
+      "fontFamily": {
+        "sans": ["Helvetica", "sans-serif"],
+        "serif": ["Times", "serif"]
+      }
+    }
+  }
+}
