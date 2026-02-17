@@ -28,7 +28,7 @@ export function setup(content: RenderCallback) {
   const main = document.getElementById("root");
   const sessionId = getCookie("sessionId") || crypto.randomUUID();
   setCookie("sessionId", sessionId);
-  const ws = new WebSocket("ws://localhost:8080");
+  const ws = new WebSocket("ws://localhost:4040");
 
   ws.addEventListener("open", () => {
     if (main) {

@@ -41,7 +41,7 @@ const app = new Application();
 // Single page application, serving at all routes.
 app.use(async (context) => {
   const ssrProps = {
-    ws: new WebSocket("ws://localhost:8080"),
+    ws: new WebSocket("ws://localhost:4040"),
     sessionId: "",
     debug: false,
   };
@@ -73,4 +73,4 @@ app.use(async (context) => {
   context.response.body = withMinify;
 });
 
-await app.listen({ port: 8000 });
+await app.listen({ port: 4041 });

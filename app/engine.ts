@@ -1,8 +1,6 @@
 import { Character } from "@/app/character/character.ts";
 import { CharacterFactory } from "@/app/set/set.private.ts";
-import { GameEvents } from "@/app/events.ts";
 import { PlayerEngine } from "@/app/player/player.private.ts";
-import { EventEmitter } from "@/deps.ts";
 import { CombatPrivate } from "@/app/combat/combat.private.ts";
 
 export interface InstanceOptions {
@@ -23,7 +21,6 @@ export type Lobby = {
 
 export class GameInstance {
   set: CharacterFactory;
-  events: EventEmitter<GameEvents> = new EventEmitter<GameEvents>();
   players: Record<string, PlayerEngine> = {};
   lobby: Lobby[] = [];
 

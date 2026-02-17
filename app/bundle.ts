@@ -1,9 +1,9 @@
-import { build } from "https://deno.land/x/esbuild@v0.14.25/mod.js";
-import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.4.1/mod.ts";
+import * as esbuild from "https://deno.land/x/esbuild@v0.20.1/mod.js";
+import { denoPlugins } from "https://deno.land/x/esbuild_deno_loader@0.9.0/mod.ts";
 
 export async function bundler(mode: "dev" | "prod" = "prod") {
   const outfile = `./main.bundle.js`;
-  await build({
+  await esbuild.build({
     absWorkingDir: Deno.cwd(),
     jsxFactory: "h",
     jsxFragment: "Fragment",
@@ -19,15 +19,17 @@ export async function bundler(mode: "dev" | "prod" = "prod") {
     bundle: true,
     minify: mode === "prod",
     minifyWhitespace: mode === "prod",
-    target: "chrome58",
+    target: "chrome99",
     entryPoints: ["./ui/entry.client.tsx"],
     plugins: [
-      denoPlugin({
-        importMapFile: "import_map.json",
+      ...denoPlugins({
+        configPath: `${Deno.cwd()}/deno.json`,
       }),
     ],
     outfile,
   });
 
-  return await Deno.readTextFile(outfile);
+  const result = await Deno.readTextFile(outfile);
+  esbuild.stop();
+  return result;
 }

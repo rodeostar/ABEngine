@@ -1,11 +1,9 @@
 import SetOne from "@/app/set/one.ts";
 import { GameInstance, BattleResults } from "@/app/engine.ts";
 import { PlayerEngine } from "@/app/player/player.private.ts";
-import { WebSocketClient, WebSocketServer } from "ws";
 import { GameEvents } from "@/app/events.ts";
 
 const game = new GameInstance({ set: SetOne });
-const wss = new WebSocketServer(8080);
 
 const encode = <T>(action: keyof GameEvents, message?: T): string => {
   return JSON.stringify({
@@ -32,7 +30,7 @@ const pipeAction = (
   user: PlayerEngine,
   action: string,
   params: Record<string, string>,
-  ws: WebSocketClient
+  ws: WebSocket
 ) => {
   const sendResult = (results: BattleResults) => {
     if (results.inQueue) {
@@ -64,11 +62,19 @@ const pipeAction = (
   }
 };
 
-wss.on("connection", (ws: WebSocketClient) => {
-  ws.on("error", (error) => {
-    console.log(error);
+Deno.serve({ port: 4040 }, (req) => {
+  if (req.headers.get("upgrade") !== "websocket") {
+    return new Response("WebSocket endpoint", { status: 200 });
+  }
+
+  const { socket: ws, response } = Deno.upgradeWebSocket(req);
+
+  ws.addEventListener("error", (error) => {
+    console.log("WebSocket error:", error);
   });
-  ws.on("message", (message: string) => {
+
+  ws.addEventListener("message", (event) => {
+    const message = event.data;
     const decoded = decode(message);
 
     if (decoded.reqs()) {
@@ -80,4 +86,6 @@ wss.on("connection", (ws: WebSocketClient) => {
       ws.send(game.encodeForClient(userId));
     }
   });
+
+  return response;
 });

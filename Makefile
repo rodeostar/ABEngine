@@ -7,4 +7,4 @@ ws:
 	deno run $(permissions) --watch ./app/wss.ts
 
 test:
-	deno test
+	deno test $(permissions)
