@@ -1,5 +1,16 @@
 import { h } from "preact";
+import { useState } from "preact/hooks";
 import { useTheme } from "@/ui/theme-provider.tsx";
+
+declare global {
+  interface Window {
+    __TW_BRIDGE__?: {
+      linkedUser: string | null;
+      linkUrl: string;
+      riftPackUnlocked: boolean;
+    };
+  }
+}
 
 type GamesViewProps = {
   onNewGame: () => void;
@@ -15,6 +26,8 @@ export const GamesView = ({
   connectionFailed = false,
 }: GamesViewProps) => {
   const theme = useTheme();
+  const bridge = typeof window !== "undefined" ? window.__TW_BRIDGE__ : null;
+  const [linkHover, setLinkHover] = useState(false);
 
   return (
     <div
@@ -123,6 +136,84 @@ export const GamesView = ({
           Return to game
         </button>
       </div>
+      {bridge && (
+        <div
+          style={{
+            marginTop: "20px",
+            padding: "16px",
+            background: bridge.riftPackUnlocked
+              ? "rgba(74, 222, 128, 0.05)"
+              : "rgba(94, 240, 196, 0.02)",
+            borderLeft: `2px solid ${bridge.riftPackUnlocked ? "rgba(74, 222, 128, 0.4)" : "rgba(94, 240, 196, 0.15)"}`,
+            borderRight: `2px solid ${bridge.riftPackUnlocked ? "rgba(74, 222, 128, 0.4)" : "rgba(94, 240, 196, 0.15)"}`,
+            borderTop: "none",
+            borderBottom: "none",
+            borderRadius: "var(--radius-sm, 2px)",
+            textAlign: "center",
+          }}
+        >
+          {bridge.riftPackUnlocked ? (
+            <div>
+              <p
+                style={{
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "#4ade80",
+                  marginBottom: "4px",
+                }}
+              >
+                Rift Pack Unlocked
+              </p>
+              <p
+                style={{
+                  fontSize: "0.7rem",
+                  color: "rgba(140,160,165,0.5)",
+                }}
+              >
+                Linked as {bridge.linkedUser}
+              </p>
+            </div>
+          ) : (
+            <div>
+              <p
+                style={{
+                  fontSize: "0.7rem",
+                  letterSpacing: "0.06em",
+                  color: "rgba(140,160,165,0.6)",
+                  marginBottom: "10px",
+                }}
+              >
+                8 units + 4 items — free with a TimeWoven account
+              </p>
+              <button
+                type="button"
+                style={{
+                  padding: "8px 16px",
+                  fontWeight: "600",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  fontSize: "0.75rem",
+                  background: linkHover ? "rgba(94, 240, 196, 0.08)" : "transparent",
+                  border: "1px solid rgba(94, 240, 196, 0.3)",
+                  borderRadius: "var(--radius-sm, 2px)",
+                  color: "#88cca0",
+                  cursor: "pointer",
+                  transition: "all .2s ease",
+                  fontFamily: "inherit",
+                }}
+                onMouseEnter={() => setLinkHover(true)}
+                onMouseLeave={() => setLinkHover(false)}
+                onClick={() => {
+                  if (bridge.linkUrl) window.open(bridge.linkUrl, "_blank");
+                }}
+              >
+                Unlock Rift Pack
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       {connectionFailed && (
         <p
           style={{
