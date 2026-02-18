@@ -88,15 +88,17 @@ Deno.test("[PlayerEngine] Player loses", () => {
   assertEquals(player.life, 9);
 });
 
-Deno.test("[PlayerEngine] Player move", () => {
+Deno.test("[PlayerEngine] Player move to empty slot", () => {
   const player = new PlayerEngine(game(), crypto.randomUUID());
+  player.shop.characters = [StrongCharA, StrongCharB, null];
   player.buy(0, 0);
   player.buy(1, 1);
-  player.buy(2, 2);
-  player.shop.characters = [StrongCharA, StrongCharB, StrongCharC];
-  player.move(2, 2);
 
-  assertNotEquals(player.board[2]?.name, StrongCharC.name);
-  assertNotEquals(player.board[2]?.power, StrongCharC.power);
-  assertNotEquals(player.board[2]?.toughness, StrongCharC.toughness);
+  assertEquals(player.board[0]?.name, StrongCharA.name);
+  assertEquals(player.board[3], null);
+
+  player.move(0, 3);
+
+  assertEquals(player.board[3]?.name, StrongCharA.name);
+  assertEquals(player.board[0], null);
 });

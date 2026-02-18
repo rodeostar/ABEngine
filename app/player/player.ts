@@ -1,4 +1,5 @@
 import { Character, CharacterBoard } from "@/app/character/character.ts";
+import { Item } from "@/app/item/item.ts";
 import { createEmptyBoard } from "@/app/consts.ts";
 
 export class Player {
@@ -7,7 +8,7 @@ export class Player {
   turn = 1;
   board = createEmptyBoard<Character>();
   wins = 0;
-  userId = crypto.randomUUID();
+  userId: string = crypto.randomUUID();
 }
 
 export interface PlayerShape {
@@ -18,4 +19,5 @@ export interface PlayerShape {
   wins: number;
   board: CharacterBoard;
   shop: CharacterBoard;
+  shopItems: (Item | null)[];
 }

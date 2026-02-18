@@ -14,18 +14,6 @@ const StrongCharB = {
   toughness: 3,
 };
 
-/***
- * E2E test of two entire game lifecycles goes here.
- *
- *
- * 1) Prep phase: players purchase characters
- * 2) Lobby phase: players join the lobby
- * 3) Combat phase: initiated once two players on the same turn join a lobby
- * 4) Repeat until p1 or p2 loses.
- *
- *
- *
- */
 Deno.test("[E2E] Playthrough", () => {
   const { game } = setup();
 

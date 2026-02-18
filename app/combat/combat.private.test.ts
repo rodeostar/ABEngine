@@ -41,8 +41,8 @@ Deno.test("[Combat] PlayerA Loses", () => {
   p2.buy(0, 0);
   p2.buy(1, 1);
   const engine = new CombatEngine(p1.board, p2.board);
-  const results = engine.start();
-  assertEquals(results, "P1");
+  const { result } = engine.start();
+  assertEquals(result, "P2");
 });
 
 Deno.test("[Combat] Player A wins", () => {
@@ -61,8 +61,8 @@ Deno.test("[Combat] Player A wins", () => {
   p2.buy(0, 0);
   p2.buy(1, 1);
   const engine = new CombatEngine(p1.board, p2.board);
-  const results = engine.start();
-  assertEquals(results, "P2");
+  const { result } = engine.start();
+  assertEquals(result, "P1");
 });
 
 Deno.test("[Combat] Draw", () => {
@@ -76,6 +76,6 @@ Deno.test("[Combat] Draw", () => {
   p2.buy(0, 0);
   p2.buy(1, 1);
   const engine = new CombatEngine(p1.board, p2.board);
-  const results = engine.start();
-  assertEquals(results, "DRAW");
+  const { result } = engine.start();
+  assertEquals(result, "DRAW");
 });

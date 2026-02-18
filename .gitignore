@@ -1,3 +1,10 @@
 *.log
 *.js
 node_modules/
+
+# Game data — ignore all games except the bundled example
+games/*
+!games/example/
+
+# Config contains local game selection — use config.example.json as template
+config.json

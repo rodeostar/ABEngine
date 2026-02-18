@@ -30,6 +30,7 @@ export async function bundler(mode: "dev" | "prod" = "prod") {
   });
 
   const result = await Deno.readTextFile(outfile);
-  esbuild.stop();
+  // Do not call esbuild.stop() here: in dev mode we bundle on every request,
+  // and stopping closes internal streams, causing "Writable stream is closed or errored" on the next request.
   return result;
 }

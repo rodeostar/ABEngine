@@ -1,0 +1,40 @@
+title: AUTO BATTLER
+tagline: "Build your squad. Fight to survive."
+fontFamily: "'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace"
+
+colors:
+  bg: "#050608"
+  cardBg: "rgba(12, 15, 20, 0.90)"
+  accent: "#88cca0"
+  accentBlue: "#88cca0"
+  text: "rgba(255,255,255,0.95)"
+  textDim: "rgba(140,160,165,0.70)"
+  danger: "#f87171"
+  success: "#4ade80"
+  gold: "#fbbf24"
+
+tiers:
+  1: { color: "#9ca3af", label: Common }
+  2: { color: "#60a5fa", label: Rare }
+  3: { color: "#fbbf24", label: Legendary }
+
+flavor:
+  rollButton: "Reroll"
+  endTurnButton: "Fight"
+  rollCurrency: "⬡"
+  startButton: "Start Game"
+  victoryTitle: "VICTORY"
+  defeatTitle: "DEFEAT"
+  victoryFlavor: "Your squad is unbeatable."
+  defeatFlavor: "Better luck next time."
+  battleWinFlavor: "Enemy eliminated."
+  battleLossFlavor: "Squad down."
+  battleDrawFlavor: "Stalemate."
+  instructions: "Buy units from the shop. Arrange your board. Hit Fight to battle. Survive 10 rounds to win. Each unit costs 3 gold."
+  playAgainButton: "Play Again"
+  shopLabel: "Shop"
+  shopPrice: "3 gold each"
+  boardLabel: "Your Board"
+  combatTitle: "Combat"
+  enemyLabel: "Enemy"
+  yourForcesLabel: "Your Forces"

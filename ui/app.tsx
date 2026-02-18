@@ -1,53 +1,69 @@
-import { h, ComponentChildren } from "preact";
+import { h, ComponentChildren, FunctionComponent } from "preact";
 import { GameProvider, useGame, PlayerPhases } from "@/ui/provider.tsx";
-import { tw } from "tw";
-import { BattlePhase } from "@/ui/views/battle-phase.tsx";
-import { ShopPhase } from "@/ui/views/shop-phase.tsx";
+import { ThemeProvider, getDefaultTheme } from "@/ui/theme-provider.tsx";
+import type { ThemeShape } from "@/app/loader.ts";
+
+export type GameViews = {
+  Welcome: FunctionComponent;
+  ShopPhase: FunctionComponent;
+  BattlePhase: FunctionComponent;
+  GameOver: FunctionComponent;
+};
 
 export type AppProps = {
   sessionId: string;
   ws: WebSocket;
   debug: boolean;
+  views: GameViews;
+  theme?: ThemeShape | null;
+  bgColor?: string;
   children?: ComponentChildren;
 };
 
-export type DebuggerProps = {
-  className?: string;
-};
-
-export const Debugger = ({ className = "" }: DebuggerProps) => {
-  const { player, sessionId } = useGame();
-
-  return (
-    <div class={`${className} no-scrollbar`}>
-      <h1>Debugging: {sessionId} </h1>
-
-      <code>
-        <pre>{JSON.stringify(player, undefined, 1)}</pre>
-      </code>
-    </div>
-  );
-};
-
-const Router = () => {
+const Router = ({ views }: { views: GameViews }) => {
   const { phase } = useGame();
 
-  if (phase === PlayerPhases.BATTLE) return <BattlePhase />;
-  else if (phase === PlayerPhases.SHOP) return <ShopPhase />;
-  else if (phase === PlayerPhases.IN_QUEUE) return <div>in queue</div>;
-
-  return <div>welcome</div>;
+  switch (phase) {
+    case PlayerPhases.BATTLE:
+      return <views.BattlePhase />;
+    case PlayerPhases.SHOP:
+      return <views.ShopPhase />;
+    case PlayerPhases.GAME_OVER:
+    case PlayerPhases.VICTORY:
+      return <views.GameOver />;
+    case PlayerPhases.IN_QUEUE:
+      return <div>Waiting...</div>;
+    case PlayerPhases.WELCOME:
+    default:
+      return <views.Welcome />;
+  }
 };
 
-export const App = (props: AppProps) => {
+export const App = ({ views, theme: themeProp, bgColor, ...props }: AppProps) => {
+  const theme = themeProp ?? getDefaultTheme();
+  const backgroundColor = bgColor ?? "transparent";
+  const content = (
+    <section
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+        overflow: "auto",
+        backgroundColor,
+        fontFamily: theme.fontFamily,
+        color: theme.text,
+      }}
+    >
+      <Router views={views} />
+      {props.children}
+    </section>
+  );
+
   return (
     <GameProvider {...props}>
-      <section
-        class={tw`p-4 bg-[#eee] w-[640px] h-[340px] flex flex-col relative`}
-      >
-        <Router />
-        {props.children}
-      </section>
+      <ThemeProvider theme={theme}>{content}</ThemeProvider>
     </GameProvider>
   );
 };

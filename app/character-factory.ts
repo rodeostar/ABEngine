@@ -12,6 +12,8 @@ export class CharacterFactory {
       tier: input?.tier ?? 1,
       level: 1,
       name,
+      flavor: input.flavor ?? "",
+      sprite: input.sprite ?? "",
     }));
   }
 
@@ -19,12 +21,15 @@ export class CharacterFactory {
     return this.characters;
   }
 
-  roll(tier = 0) {
+  roll(count = 3, turn = 1) {
     if (this.count < 1) return [];
 
-    const list = this.asArray();
-    return [...new Array(tier + 3)].map(() =>
-      list[Math.floor(Math.random() * list.length)].create()
+    const maxTier = turn >= 6 ? 3 : turn >= 3 ? 2 : 1;
+    const eligible = this.asArray().filter((c) => c.tier <= maxTier);
+    if (eligible.length === 0) return [];
+
+    return [...new Array(count)].map(() =>
+      eligible[Math.floor(Math.random() * eligible.length)].clone()
     );
   }
 

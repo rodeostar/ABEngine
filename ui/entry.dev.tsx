@@ -1,28 +1,33 @@
 import { h } from "preact";
-import { App, Debugger } from "@/ui/app.tsx";
-import { tw } from "tw";
+import { App } from "@/ui/app.tsx";
+import { buildThemeFromData } from "@/ui/theme-provider.tsx";
+import * as views from "@/ui/views/index.ts";
+
+declare global {
+  interface Window {
+    __GAME_THEME__?: Record<string, unknown>;
+  }
+}
 
 interface DevModeProps {
   ws: WebSocket;
 }
 
-const size = 450;
+const theme = buildThemeFromData(
+  typeof window !== "undefined" ? window.__GAME_THEME__ ?? null : null
+);
 
 export const DevelopmentMode = ({ ws }: DevModeProps) => (
-  <div class={tw`flex flex-col justify-center items-center gap-y-2 pt-8`}>
-    <App sessionId={"player1"} ws={ws} debug>
-      <Debugger
-        className={tw`text-xs bg-black text-yellow-400 p-4 h-full w-[${size}px] overflow-scroll absolute right-[-${
-          size + 20
-        }px]`}
-      />
-    </App>
-    <App sessionId="player2" ws={ws} debug>
-      <Debugger
-        className={tw`text-xs bg-black text-yellow-400 p-4 h-full w-[${size}px] overflow-scroll absolute right-[-${
-          size + 20
-        }px]`}
-      />
-    </App>
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "16px",
+      paddingTop: "32px",
+    }}
+  >
+    <App sessionId={"player1"} ws={ws} debug views={views} theme={theme} />
   </div>
 );

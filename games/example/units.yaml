@@ -1,0 +1,134 @@
+# Example auto-battler units
+# Demonstrates all trigger/effect types supported by ABEngine
+
+- name: Guard
+  power: 2
+  toughness: 4
+  tier: 1
+  flavor: "Stands firm when others flee."
+  ability:
+    trigger: hurt
+    effect: buff_self
+    value: { power: 0, toughness: 1 }
+    text: "Hardens when struck."
+
+- name: Scout
+  power: 3
+  toughness: 2
+  tier: 1
+  flavor: "Always moves first."
+  ability:
+    trigger: before
+    effect: buff_self
+    value: { power: 1, toughness: 0 }
+    text: "Strikes before the enemy reacts."
+
+- name: Saboteur
+  power: 2
+  toughness: 2
+  tier: 1
+  flavor: "A final trick up the sleeve."
+  ability:
+    trigger: faint
+    effect: damage_random_enemy
+    value: 1
+    text: "Explodes on death."
+
+- name: Medic
+  power: 1
+  toughness: 3
+  tier: 1
+  flavor: "Keeps the squad alive."
+  ability:
+    trigger: hurt
+    effect: heal_self
+    value: 1
+    text: "Patches wounds mid-fight."
+
+- name: Sergeant
+  power: 3
+  toughness: 4
+  tier: 2
+  flavor: "Leads from the front."
+  ability:
+    trigger: hurt
+    effect: buff_behind
+    value: { power: 1, toughness: 0 }
+    text: "Rallies the unit behind."
+
+- name: Sniper
+  power: 2
+  toughness: 3
+  tier: 2
+  flavor: "Picks off the back line."
+  ability:
+    trigger: before
+    effect: damage_backline
+    value: 1
+    text: "Hits the enemy rear."
+
+- name: Martyr
+  power: 4
+  toughness: 2
+  tier: 2
+  flavor: "Sacrifice fuels the cause."
+  ability:
+    trigger: faint
+    effect: buff_all_allies
+    value: { power: 1, toughness: 1 }
+    text: "Empowers all allies on death."
+
+- name: Oracle
+  power: 2
+  toughness: 3
+  tier: 2
+  flavor: "Sees what others cannot."
+  ability:
+    trigger: before
+    effect: buff_self_if_stronger_ally
+    value: { power: 1, toughness: 1 }
+    text: "Draws strength from allies."
+
+- name: Demolisher
+  power: 5
+  toughness: 3
+  tier: 3
+  flavor: "Leaves a crater behind."
+  ability:
+    trigger: faint
+    effect: damage_random_enemy
+    value: 3
+    text: "Massive blast on death."
+
+- name: Commander
+  power: 3
+  toughness: 6
+  tier: 3
+  flavor: "No one falls on my watch."
+  ability:
+    trigger: hurt
+    effect: heal_all_allies
+    value: 2
+    text: "Restores the whole squad."
+
+- name: Vanguard
+  power: 6
+  toughness: 4
+  tier: 3
+  flavor: "Charges headlong into danger."
+  ability:
+    trigger: before
+    effect: damage_frontline
+    value: 2
+    text: "Hits the front line hard."
+
+- name: Engineer
+  power: 4
+  toughness: 5
+  tier: 3
+  flavor: "Always has a backup plan."
+  ability:
+    trigger: faint
+    effect: summon
+    value: { name: "Drone", power: 2, toughness: 2, tier: 1, flavor: "Automated reinforcement." }
+    text: "Deploys a drone on death."

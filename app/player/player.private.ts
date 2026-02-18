@@ -24,14 +24,15 @@ export class PlayerEngine extends Player {
   game: GameInstance;
   shop: ShopEngine;
   engines: Array<CharacterEngine | null>;
-  userId: string;
+  override userId: string;
+
   constructor(game: GameInstance, userId: string) {
     super();
     this.userId = userId;
     this.engines = createEmptyBoard();
     this.game = game;
-    this.shop = new ShopEngine(game.set);
-    this.shop.roll();
+    this.shop = new ShopEngine(game.set, game.itemSet ?? null);
+    this.shop.roll(this.turn);
   }
 
   move(sourceIndex: number, targetIndex: number) {
@@ -55,6 +56,7 @@ export class PlayerEngine extends Player {
   getPublicPlayer(): PlayerShape {
     return {
       shop: this.shop.characters,
+      shopItems: this.shop.items,
       bank: this.bank,
       life: this.life,
       turn: this.turn,
@@ -74,28 +76,30 @@ export class PlayerEngine extends Player {
   }
 
   lose() {
-    if (this.life === 1) {
-      this.game.end(this.userId);
+    if (this.life <= 1) {
+      this.life = 0;
     } else {
       this.life--;
       this.bank = 10;
-      this.shop.roll();
+      this.turn++;
+      this.shop.roll(this.turn);
     }
   }
 
   win() {
-    if (this.wins === 10) {
-      this.game.end(this.userId);
+    if (this.wins >= 10) {
+      this.wins = 10;
     } else {
       this.wins++;
       this.bank = 10;
-      this.shop.roll();
+      this.turn++;
+      this.shop.roll(this.turn);
     }
   }
 
   roll() {
     if (this.bank > 0) {
-      this.shop.roll();
+      this.shop.roll(this.turn);
       this.bank--;
     }
   }
@@ -112,27 +116,30 @@ export class PlayerEngine extends Player {
     const source = this.shop.characters[shopIndex];
     const target = this.engines[boardIndex];
 
-    if (
-      !source ||
-      (!source && !target) ||
-      (typeof source.name === "string" &&
-        typeof target?.name === "string" &&
-        source.name !== target.name) ||
-      this.bank < 3
-    ) {
-      // do nothing
-    } else {
-      if (target && source.name === target.name) {
-        // source and target match
-        target.levelUp();
-      } else if (target == null) {
-        // place on empty square
-        this.engines[boardIndex] = new CharacterEngine(source.create());
-      }
+    if (!source || this.bank < 3) return;
+    if (target && source.name !== target.name) return;
 
-      this.bank -= 3;
-      this.shop.characters[boardIndex] = null;
-      this.sync(boardIndex);
+    if (target && source.name === target.name) {
+      target.levelUp();
+    } else {
+      this.engines[boardIndex] = new CharacterEngine(source.clone());
     }
+
+    this.bank -= 3;
+    this.shop.characters[shopIndex] = null;
+    this.sync(boardIndex);
+  }
+
+  buyItem(boardIndex: number, itemShopIndex: number) {
+    const item = this.shop.items[itemShopIndex];
+    const target = this.engines[boardIndex];
+
+    if (!item || !target || this.bank < 3) return;
+
+    target.power += item.power;
+    target.toughness += item.toughness;
+    this.bank -= 3;
+    this.shop.items[itemShopIndex] = null;
+    this.sync(boardIndex);
   }
 }

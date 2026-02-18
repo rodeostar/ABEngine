@@ -1,7 +1,7 @@
 import { assertEquals, assertNotEquals, assert } from "@/app/testing/main.ts";
-import { CharacterFactory } from "@/app/set/set.private.ts";
+import { CharacterFactory } from "@/app/character-factory.ts";
 
-Deno.test("[CharacterSet] roll()", () => {
+Deno.test("[CharacterFactory] roll()", () => {
   const factory = new CharacterFactory();
   const a1 = factory.create("friend", {});
   const a2 = factory.create("friend2", {});
@@ -15,18 +15,18 @@ Deno.test("[CharacterSet] roll()", () => {
   }
 });
 
-Deno.test("[CharacterSet] get()", () => {
+Deno.test("[CharacterFactory] get()", () => {
   const fact = new CharacterFactory();
   assertEquals(fact.characters, fact.get());
 });
 
-Deno.test("[CharacterSet] asArray()", () => {
+Deno.test("[CharacterFactory] asArray()", () => {
   const fact = new CharacterFactory();
   const arr = fact.asArray();
   arr.every((item) => assert(item.name in fact.characters));
 });
 
-Deno.test("[CharacterSet] create()", () => {
+Deno.test("[CharacterFactory] create()", () => {
   const factory = new CharacterFactory();
   const friend = factory.create("friend", {});
   assertEquals(factory.characters["friend"].id, friend.id);

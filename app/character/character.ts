@@ -6,6 +6,8 @@ export type CharacterShape = Partial<{
   name: string;
   exp: number;
   id: string;
+  flavor: string;
+  sprite: string;
 }>;
 
 export class Character {
@@ -16,7 +18,10 @@ export class Character {
   name: string;
   exp: number;
   id: string;
-  constructor({ power, toughness, tier, level, name, exp }: CharacterShape) {
+  flavor: string;
+  sprite: string;
+
+  constructor({ power, toughness, tier, level, name, exp, flavor, sprite }: CharacterShape) {
     if (!name) throw new Error("Character must have a name!");
     this.id = crypto.randomUUID();
     this.name = name;
@@ -25,9 +30,11 @@ export class Character {
     this.tier = tier ?? 1;
     this.level = level ?? 1;
     this.exp = exp ?? 0;
+    this.flavor = flavor ?? "";
+    this.sprite = sprite ?? "";
   }
 
-  create() {
+  clone() {
     return new Character({
       name: this.name,
       power: this.power,
@@ -35,6 +42,8 @@ export class Character {
       tier: this.tier,
       level: this.level,
       exp: this.exp,
+      flavor: this.flavor,
+      sprite: this.sprite,
     });
   }
 }

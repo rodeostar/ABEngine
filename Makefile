@@ -1,10 +1,17 @@
-permissions=--allow-net --allow-read --allow-env --allow-write --allow-run
+SHELL := cmd.exe
+.SHELLFLAGS := /C
 
-run:
-	deno run $(permissions) --watch ./app/server.tsx
+.PHONY: dev kill test clean
 
-ws:
-	deno run $(permissions) --watch ./app/wss.ts
+kill:
+	powershell -NoProfile -ExecutionPolicy Bypass -File scripts\kill-ports.ps1
+
+dev: kill
+	ping -n 2 127.0.0.1 >nul
+	deno task dev
 
 test:
-	deno test $(permissions)
+	deno task test
+
+clean: kill
+	if exist main.bundle.js del /f main.bundle.js

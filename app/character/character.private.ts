@@ -1,10 +1,8 @@
 import { Character, CharacterShape } from "@/app/character/character.ts";
 
 export class CharacterEngine extends Character {
-  id: string;
   constructor(props: CharacterShape) {
     super(props);
-    this.id = crypto.randomUUID();
   }
 
   levelUp() {
@@ -21,6 +19,6 @@ export class CharacterEngine extends Character {
   }
 
   getPublicCharacter() {
-    return super.create();
+    return super.clone();
   }
 }

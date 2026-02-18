@@ -1,0 +1,11 @@
+# Example items
+
+- name: Shield Module
+  power: 0
+  toughness: 2
+  flavor: "Standard-issue protection."
+
+- name: Combat Blade
+  power: 2
+  toughness: 0
+  flavor: "Sharp and reliable."

@@ -11,9 +11,9 @@ Deno.test("[Character] Construct public character", () => {
   assertEquals(char.tier, 1);
 });
 
-Deno.test("[Character] Public character can create a copy of itself", () => {
+Deno.test("[Character] Public character can clone itself", () => {
   const char = new Character({ name: "hello" });
-  const copy = char.create();
+  const copy = char.clone();
 
   assertEquals(char.name, copy.name);
   assertEquals(char.exp, copy.exp);

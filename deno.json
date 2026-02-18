@@ -1,8 +1,8 @@
 {
   "tasks": {
-    "run": "deno run --allow-net --allow-read --allow-env --allow-write --allow-run --watch ./app/server.tsx",
-    "ws": "deno run --allow-net --allow-read --allow-env --allow-write --allow-run --watch ./app/wss.ts",
-    "test": "deno test --allow-net --allow-read --allow-env"
+    "dev": "deno run --allow-net --allow-read --allow-env --allow-write --allow-run --watch ./app/server.tsx",
+    "test": "deno test --allow-net --allow-read --allow-env",
+    "kill": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/kill-ports.ps1"
   },
   "imports": {
     "@/": "./",
@@ -11,7 +11,8 @@
     "preact-render-to-string": "npm:preact-render-to-string@6.3.1",
     "tw": "npm:twind@0.16.19",
     "tw/sheets": "npm:twind@0.16.19/sheets",
-    "oak": "npm:@oakserver/oak@14.1.0"
+    "jsr:@std/yaml": "jsr:@std/yaml@1.0.0",
+    "jsr:@std/path": "jsr:@std/path@1.0.0"
   },
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns"],

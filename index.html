@@ -1,21 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Game</title>
+    <title>ABEngine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+      * { box-sizing: border-box; }
+      button {
+        font-family: inherit;
+      }
+      button:hover:not(:disabled) {
+        background: rgba(94, 240, 196, .08) !important;
+      }
+      button:active:not(:disabled) {
+        background: rgba(94, 240, 196, .14) !important;
+      }
+      :root {
+        --tw-fast: 0.16s ease;
+        --tw-normal: 0.24s ease;
+        --tw-slow: 0.36s ease;
+        --tw-accent: #88cca0;
+        --holo-panel-bg: rgba(94, 240, 196, .03);
+        --holo-panel-outline: rgba(94, 240, 196, .3);
+        --radius-sm: 2px;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #050608;
+        /* background-image: set via game theme or config */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        min-height: 100vh;
+        font-family: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace;
+        -webkit-font-smoothing: antialiased;
+      }
+      #root {
+        position: relative;
+        z-index: 2;
+        display: block;
+        width: 100%;
+        height: 100vh;
+      }
+      @keyframes glowPulse {
+        0%, 100% { box-shadow: 0 0 15px rgba(94, 240, 196, 0.15); }
+        50%      { box-shadow: 0 0 25px rgba(94, 240, 196, 0.35); }
+      }
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(94, 240, 196, 0.3) rgba(0, 0, 0, 0.2);
+      }
+      *::-webkit-scrollbar { width: 6px; height: 6px; }
+      *::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+      *::-webkit-scrollbar-thumb {
+        background: rgba(94, 240, 196, 0.3);
+        border-radius: 9999px;
+      }
+      *::-webkit-scrollbar-thumb:hover { background: rgba(94, 240, 196, 0.5); }
       .no-scrollbar::-webkit-scrollbar {
         display: none;
       }
-
       .no-scrollbar {
-        -ms-overflow-style: none; /* IE and Edge */
-        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .app-vignette-overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 1;
+        background: radial-gradient(ellipse at center, #05060800, #05060866 12%, #050608bf 54%, #050608d9);
       }
     </style>
     <!-- @TW -->
   </head>
   <body>
+    <div class="app-vignette-overlay"></div>
     <main id="root"><!-- @SSR --></main>
+    <!-- @THEME -->
     <!-- @BUNDLE -->
   </body>
 </html>

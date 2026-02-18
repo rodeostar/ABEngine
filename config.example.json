@@ -1,9 +1,10 @@
 {
+  "game": "example",
   "mode": "dev",
   "tailwind": {
     "theme": {
       "fontFamily": {
-        "sans": ["Helvetica", "sans-serif"],
+        "sans": ["Segoe UI", "system-ui", "-apple-system", "sans-serif"],
         "serif": ["Times", "serif"]
       }
     }

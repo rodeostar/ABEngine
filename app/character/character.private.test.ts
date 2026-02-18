@@ -31,9 +31,9 @@ Deno.test("[CharacterEngine] levels up a character", () => {
   assertEquals(charC.exp, 5);
 });
 
-Deno.test("[CharacterEngine] can create a copy of the public instance", () => {
+Deno.test("[CharacterEngine] can clone the public instance", () => {
   const char = new CharacterEngine({ name: "hello" });
-  const copy = char.create();
+  const copy = char.clone();
 
   assertEquals(char.name, copy.name);
   assertEquals(char.exp, copy.exp);
